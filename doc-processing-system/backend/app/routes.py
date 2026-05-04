@@ -40,7 +40,8 @@ async def upload(file: UploadFile = File(...)):
     db.refresh(doc)
 
     # trigger celery task
-    process_document.delay(doc.id)
+    # process_document.delay(doc.id)
+    process_document(doc.id)
 
     db.close()
 

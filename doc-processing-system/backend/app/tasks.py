@@ -2,7 +2,7 @@ import time
 import json
 import redis
 
-from .celery_worker import celery
+# from .celery_worker import celery
 from .database import SessionLocal
 from .models import Document
 from .services import extract_text, make_summary, get_keywords
@@ -15,7 +15,7 @@ def send(doc_id, event):
     r.rpush(f"doc_logs_{doc_id}", data)       # history
 
 
-@celery.task(name="app.tasks.process_document")
+# @celery.task(name="app.tasks.process_document")
 def process_document(doc_id):
     db = SessionLocal()
     doc = db.query(Document).get(doc_id)
