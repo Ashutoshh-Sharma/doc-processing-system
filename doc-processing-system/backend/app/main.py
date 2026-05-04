@@ -6,7 +6,6 @@ from app.routes import router
 
 app = FastAPI()
 
-# ✅ CORS FIX
 origins = [
     "http://localhost:5173",
 ]
@@ -19,8 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ✅ DB create
-Base.metadata.create_all(bind=engine)
+@app.on_event("startup")
+def on_startup():
+    Base.metadata.create_all(bind=engine)
 
-# ✅ routes
 app.include_router(router)
