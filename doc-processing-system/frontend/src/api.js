@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// const BASE = "http://localhost:8000";
 const BASE = "https://doc-processing-system-y8y1.onrender.com";
 
 export const uploadFile = (file) => {
@@ -11,21 +10,14 @@ export const uploadFile = (file) => {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+    withCredentials: false,  
   });
-};
-
-export const getDocuments = () => {
-  return axios.get(`${BASE}/documents`);
 };
 
 export const getStatus = (id) => {
   return axios.get(`${BASE}/status/${id}`);
 };
 
-export const retryJob = (id) => {
-  return axios.post(`${BASE}/retry/${id}`);
-};
-
-export const finalizeDoc = (id) => {
-  return axios.post(`${BASE}/finalize/${id}`);
+export const getDocuments = () => {
+  return axios.get(`${BASE}/documents`);
 };
