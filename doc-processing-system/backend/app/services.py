@@ -2,10 +2,11 @@ import re
 from collections import Counter
 
 def extract_text(file_path):
-    return "This is dummy extracted text from file."
+    # dummy extractor (safe for deploy)
+    return "This is extracted text from file."
 
 def make_summary(text):
-    return text[:100]
+    return text[:120]
 
 def get_keywords(text):
     words = re.findall(r"\w+", text.lower())

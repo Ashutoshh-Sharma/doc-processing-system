@@ -6,20 +6,18 @@ from app.routes import router
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",
-]
-
+# CORS FIX
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# create tables on startup
 @app.on_event("startup")
-def on_startup():
+def startup():
     Base.metadata.create_all(bind=engine)
 
 app.include_router(router)

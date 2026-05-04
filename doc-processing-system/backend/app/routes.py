@@ -15,7 +15,10 @@ async def upload(file: UploadFile = File(...)):
         UPLOAD_DIR = "/tmp/uploads"
         os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-        file_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{file.filename}")
+        file_path = os.path.join(
+            UPLOAD_DIR,
+            f"{uuid.uuid4()}_{file.filename}"
+        )
 
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
@@ -30,11 +33,13 @@ async def upload(file: UploadFile = File(...)):
         db.commit()
         db.refresh(doc)
 
+        # direct processing (no celery)
         process_document(doc.id)
 
         return {"doc_id": doc.id}
 
     except Exception as e:
+        print("UPLOAD ERROR:", e)
         return {"error": str(e)}
 
     finally:

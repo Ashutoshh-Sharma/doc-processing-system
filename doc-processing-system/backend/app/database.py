@@ -1,26 +1,18 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+import os
 
-from app.database import Base, engine
-from app.routes import router
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-app = FastAPI()
+# fallback for safety (prevents crash)
+if not DATABASE_URL:
+    DATABASE_URL = "sqlite:///./test.db"
 
-# ✅ CORS FIX
-origins = [
-    "http://localhost:5173",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={"sslmode": "require"} if "postgresql" in DATABASE_URL else {}
 )
 
-# ✅ DB create
-Base.metadata.create_all(bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
-# ✅ routes
-app.include_router(router)
+Base = declarative_base()
