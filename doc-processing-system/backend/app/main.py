@@ -5,10 +5,14 @@ from app.routes import router
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",   # 🔥 frontend dev
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,   # 🔥 FIX
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
