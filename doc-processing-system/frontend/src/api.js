@@ -1,11 +1,17 @@
 import axios from "axios";
 
-const BASE = "http://localhost:8000";
+// const BASE = "http://localhost:8000";
+const BASE = "https://doc-processing-system-y8y1.onrender.com";
 
 export const uploadFile = (file) => {
-  const fd = new FormData();
-  fd.append("file", file);
-  return axios.post(`${BASE}/upload`, fd);
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return axios.post(`${BASE}/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const getDocuments = () => {
