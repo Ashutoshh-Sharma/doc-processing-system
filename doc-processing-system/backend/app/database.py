@@ -1,14 +1,26 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-import os
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+from app.database import Base, engine
+from app.routes import router
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"sslmode": "require"}  # important for Render
+app = FastAPI()
+
+# ✅ CORS FIX
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-SessionLocal = sessionmaker(bind=engine)
+# ✅ DB create
+Base.metadata.create_all(bind=engine)
 
-Base = declarative_base()
+# ✅ routes
+app.include_router(router)

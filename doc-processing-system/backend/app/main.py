@@ -6,10 +6,9 @@ from app.routes import router
 
 app = FastAPI()
 
-# CORS CONFIG
+# ✅ CORS FIX
 origins = [
-    "http://localhost:5173",   # local frontend
-    "https://doc-processing-system-y8y1.onrender.com"  # optional
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
@@ -20,13 +19,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Handle preflight requests
-@app.options("/{rest_of_path:path}")
-async def preflight_handler():
-    return {"message": "OK"}
-
-# Create tables
+# ✅ DB create
 Base.metadata.create_all(bind=engine)
 
-# Include routes
+# ✅ routes
 app.include_router(router)
